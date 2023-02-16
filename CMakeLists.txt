@@ -53,7 +53,6 @@ find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Sophus REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(xtensor) # reading npy
 
 find_package(GTest REQUIRED)
 find_package(benchmark REQUIRED)
