@@ -54,7 +54,7 @@ struct PanoData {
 class DepthPano final : public MatBase<PanoData> {
   PanoCfg cfg_;           // config
   int id_{-1};            // pano id
-  double time_{0};        // creation time
+  uint64_t time_ns_{0};   // creation time
   double num_sweeps_{0};  // num sweeps added to this pano
   Sophus::SE3d tf_o_p_;   // tf from pano to odom (fix odom frame, not imu!)
   SE3fVec tfs_p_l_;       // transform of each col to pano
@@ -66,12 +66,13 @@ class DepthPano final : public MatBase<PanoData> {
 
   std::string Repr() const;
   int id() const noexcept { return id_; }
-  double time() const noexcept { return time_; }
+  uint64_t time_ns() const noexcept { return time_ns_; }
   const auto& cfg() const noexcept { return cfg_; }
   const auto& tf_o_p() const noexcept { return tf_o_p_; }
   double num_sweeps() const noexcept { return num_sweeps_; }
 
   void set_id(int id) noexcept { id_ = id; }
+  void set_time_ns(uint64_t t) noexcept { time_ns_ = t; }
 
   /// @brief Allocate storage
   size_t Allocate(cv::Size pano_size) { return AllocateMat(pano_size); }

@@ -39,7 +39,7 @@ class PanoWindow {
   const DepthPano& removed() const { return *ptrs_.back(); }
 
   /// @brief Add a new pano
-  DepthPano& AddPano(int id, double time, const Sophus::SE3d& tf_o_p);
+  DepthPano& AddPano(int id, uint64_t time_ns, const Sophus::SE3d& tf_o_p);
   /// @brief Remove pano at index
   /// @note This will not erase the pano, only move it to the remove slot
   DepthPano& RemovePanoAt(int i);

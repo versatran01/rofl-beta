@@ -114,7 +114,7 @@ void Visualizer::DrawSweep(const LidarSweep& sweep, const SweepGrid& grid) {
 
   // Visualize signal edge
   // ApplyCmap(sweep.edge() + 6, sweep_edge_disp_, 1 / 12.0,
-  // cv::COLORMAP_VIRIDIS);
+  // cv::COLORMAP_AUTUMN);
 }
 
 void Visualizer::DrawPanos(const PanoWindow& pwin, const GicpSolver& gicp) {
@@ -140,7 +140,7 @@ void Visualizer::DrawPano(const DepthPano& pano,
   if (cfg_.show_pano_signal) {
     pano.ExtractSignal16U(pviz.signal);
     ApplyCmap(
-        pviz.signal, pviz.signal, 1.0 / cfg_.max_signal, cv::COLORMAP_VIRIDIS);
+        pviz.signal, pviz.signal, 1.0 / cfg_.max_signal, cv::COLORMAP_AUTUMN);
   }
 
   if (cfg_.show_pano_info) {
@@ -153,7 +153,7 @@ void Visualizer::DrawPano(const DepthPano& pano,
 
   if (cfg_.show_pano_grad) {
     pano.ExtractGrad16U(pviz.grad);
-    ApplyCmap(pviz.grad, pviz.grad, 1.0 / 256, cv::COLORMAP_CIVIDIS);
+    ApplyCmap(pviz.grad, pviz.grad, 1.0 / 256, cv::COLORMAP_AUTUMN);
   }
 
   // Draw match

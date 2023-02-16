@@ -120,7 +120,7 @@ LidarScan MakeScan(const sensor_msgs::ImageConstPtr& image_ptr,
   ScanInfo info;
   info.col_span.start = roi.x_offset;
   info.col_span.end = info.col_span.start + roi.width;
-  info.end_time = header.stamp.toSec();
+  info.end_time_ns = header.stamp.toNSec();
   info.col_dtime = cinfo_msg.K[0];
   info.range_scale = static_cast<float>(cinfo_msg.R[0]);
 
