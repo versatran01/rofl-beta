@@ -1,6 +1,6 @@
 <launch>
     <arg name="debug" default="false"/>
-    <env if="$(arg debug)" name="ROSCONSOLE_CONFIG_FILE" value="$(find svcpp)/launch/debug.conf"/>
+    <env if="$(arg debug)" name="ROSCONSOLE_CONFIG_FILE" value="$(find rofl)/launch/debug.conf"/>
 
     <arg name="v" default="0"/>
     <env name="GLOG_v" value="$(arg v)"/>
@@ -15,12 +15,12 @@
     <arg name="body_frame" default="body"/>
     <arg name="min_path_dist" default="0.01"/>
 
-    <node pkg="svcpp" type="sv_rofl_node_odom" name="rofl_odom" output="screen" ns="os_node">
+    <node pkg="rofl" type="sv_rofl_node_odom" name="rofl_odom" output="screen" ns="os_node">
         <remap from="~imu" to="imu"/>
         <remap from="~scan/image" to="image"/>
         <remap from="~scan/camera_info" to="camera_info"/>
 
-        <rosparam command="load" file="$(find svcpp)/config/rofl.yaml" />
+        <rosparam command="load" file="$(find rofl)/config/rofl.yaml" />
         <param name="log" type="int" value="$(arg log)"/>
         <param name="vis" type="int" value="$(arg vis)"/>
         <param name="est" type="bool" value="$(arg est)"/>
