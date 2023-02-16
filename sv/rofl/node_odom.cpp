@@ -559,17 +559,18 @@ void NodeOdom::Publish(const std_msgs::Header& lidar_header) {
       cinfo_msg->R[0] = PanoData::kRangeScale;
       if (pubs_.pub_pano.getNumSubscribers() > 0) {
         const auto image_msg =
-            cv_bridge::CvImage(cinfo_msg->header, "16UC3", pano_new.mat())
+            cv_bridge::CvImage(cinfo_msg->header, "16UC4", pano_new.mat())
                 .toImageMsg();
         pubs_.pub_pano.publish(image_msg, cinfo_msg);
       }
       if (pubs_.pub_pano_viz.getNumSubscribers() > 0) {
-        cv::Mat channel[3];
-        cv::split(pano_new.mat(), channel);
+        // Extract first channel (depth)
+        cv::Mat d_channel;
+        cv::extractChannel(pano_new.mat(), d_channel, 0);
         
         const auto image_msg =
             cv_bridge::CvImage(cinfo_msg->header, "bgr8", 
-                ApplyCmap(channel[0], 1.0 / 65536, cv::COLORMAP_JET)).toImageMsg();
+                ApplyCmap(d_channel, 1.0 / 65536, cv::COLORMAP_JET)).toImageMsg();
         pubs_.pub_pano_viz.publish(image_msg, cinfo_msg);
       }
     }
