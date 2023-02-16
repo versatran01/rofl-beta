@@ -1,0 +1,56 @@
+odom:
+  use_signal: true
+  rate_factor: 1
+  pano_min_sweeps: 20
+  pano_max_sweeps: 0
+  pano_max_trans: 5.0
+  pano_match_ratio: 0.85
+  pano_render_prev: false
+  pano_align_gravity: false
+imuq:
+  bufsize: 30
+  rate: 100.0
+  acc_sigma: 0.005
+  acc_bias_sigma: 0.0005
+  gyr_sigma: 0.0005
+  gyr_bias_sigma: 0.00005
+traj:
+  use_acc: false
+  update_bias: false
+grid:
+  cell_rows: 2
+  cell_cols: 16
+  feat_max_smooth: 0.2
+  feat_min_pixels: 4
+  feat_min_range: 1.0
+  feat_min_length: 0.2
+  feat_nms_dist: 0.5
+gicp:
+  max_outer_iters: 4
+  max_inner_iters: 2
+  match_half_rows: 2
+  match_half_cols: 2
+  stop_pos_tol: 1.0e-4
+  stop_rot_tol: 1.0e-5
+  use_all_panos: true
+proj:
+  pano_rows: 256
+  pano_cols: 1024
+  pano_vfov: 0.0
+pano:
+  max_info: 10
+  min_range: 1.0
+  max_range: 100.0
+  fuse_rel_tol: 0.03
+  fuse_abs_tol: 0.5
+iviz:
+  min_range: 4.0
+  max_signal: 1024.0
+  disp_scale_sweep: 1.5
+  disp_scale_pano: 1.25
+  show_pano_range: false
+  show_pano_signal: true
+  show_pano_info: false
+  show_pano_grad: true
+  screen_width: 2560
+  screen_height: 1440
