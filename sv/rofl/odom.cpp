@@ -282,7 +282,7 @@ void LidarOdom::UpdateMap() {
     if (cfg_.pano_align_gravity) {
       tf_o_l.so3() = traj.GetRotWorldOdom().inverse();
     }
-    auto& pano_new = pwin.AddPano(pano_id_++, sweep.TimeEnd(), tf_o_l);
+    auto& pano_new = pwin.AddPano(pano_id_++, sweep.TimeEndNs(), tf_o_l);
 
     // Render previous pano into new one
     if (cfg_.pano_render_prev && pwin.size() >= 2) {

@@ -22,14 +22,15 @@ const DepthPano& PanoWindow::At(int i) const {
   return *ptrs_.at(i);
 }
 
-DepthPano& PanoWindow::AddPano(int id, double time, const SE3d& tf_o_p) {
+DepthPano& PanoWindow::AddPano(int id, uint64_t time_ns, const SE3d& tf_o_p) {
   CHECK(!full());
   CHECK_LE(0, p_);
-  CHECK_GT(time, 0);
+  CHECK_GT(time_ns, 0);
 
   // note that p_ is 1 past current pano
   auto& pano = At(p_);
   pano.Reset(id, tf_o_p);
+  pano.set_time_ns(time_ns);
   ++p_;
   return pano;
 }

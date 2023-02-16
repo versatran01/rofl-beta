@@ -16,7 +16,7 @@ constexpr T Sq(T x) noexcept {
 }  // namespace
 
 void ScanInfo::Check() const {
-  CHECK_GE(end_time, 0);
+  CHECK_GE(end_time_ns, 0);
   CHECK_GE(col_dtime, 0);
   CHECK_GE(col_span.start, 0);
 }
@@ -26,7 +26,7 @@ std::string ScanInfo::Repr() const {
       "col_span=[{},{}), end_time={}, col_dt={}ns, range_scale={}",
       col_span.start,
       col_span.end,
-      end_time,
+      end_time_ns/1.e9,
       static_cast<int>(col_dtime * 1e9),
       range_scale);
 }
@@ -130,8 +130,8 @@ void LidarSweep::SetInfo(const ScanInfo& new_info) {
   info_.col_dtime = new_info.col_dtime;
 
   // Make sure time only goes forward
-  if (info_.end_time > 0) CHECK_LT(info_.end_time, new_info.end_time);
-  info_.end_time = new_info.end_time;
+  if (info_.end_time_ns > 0) CHECK_LT(info_.end_time_ns, new_info.end_time_ns);
+  info_.end_time_ns = new_info.end_time_ns;
 
   // TODO (rofl): need to return jumped cols
   info_.col_span = new_info.col_span;
@@ -322,7 +322,7 @@ cv::Mat MakeTestScanMat(cv::Size size, float range) {
 LidarScan MakeTestScan(cv::Size size, float range) {
   const auto mat = MakeTestScanMat(size, range);
   ScanInfo info;
-  info.end_time = 1.0;
+  info.end_time_ns = 1;
   info.col_dtime = 1.0 / size.width;
   info.range_scale = 512.0F;
   info.col_span = {0, size.width};

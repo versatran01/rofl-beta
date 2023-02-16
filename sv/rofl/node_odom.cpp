@@ -523,13 +523,14 @@ void NodeOdom::Publish(const std_msgs::Header& lidar_header) {
   static nm::Path pano_path_msg;
   pano_path_msg.poses.reserve(128);
 
-  static int pano_rm_id{-1};
+  static int pano_old_id{0};
   const auto& pano_rm = pwin.removed();
   const auto& pano_new = pwin.first();
+  const auto& pano_old = pwin.last();
   static auto cinfo_msg{boost::make_shared<sensor_msgs::CameraInfo>()};
 
-  // At the beginning pano_rm.id() should be -1
-  if (pano_rm.id() > pano_rm_id) {
+  // At the beginning pano_old.id() should be 0
+  if (pano_old.id() > pano_old_id) {
     // Publish removed pano poses as a graph (path)
     if (pubs_.pub_pano_graph.getNumSubscribers() > 0) {
       pano_path_msg.header = odom_header;
@@ -538,7 +539,7 @@ void NodeOdom::Publish(const std_msgs::Header& lidar_header) {
       // that slot changes, then we add this pano's pose to the graph
       gm::PoseStamped pano_pose_msg;
       pano_pose_msg.header.frame_id = frames_.odom;
-      pano_pose_msg.header.stamp.fromSec(pano_rm.time());
+      pano_pose_msg.header.stamp.fromNSec(pano_rm.time_ns());
       Sophus2Ros(pano_rm.tf_o_p(), pano_pose_msg.pose);
       pano_path_msg.poses.push_back(pano_pose_msg);
 
@@ -550,6 +551,7 @@ void NodeOdom::Publish(const std_msgs::Header& lidar_header) {
         pubs_.pub_pano_viz.getNumSubscribers() > 0) 
     {
       cinfo_msg->header = odom_header;
+      cinfo_msg->header.stamp.fromNSec(pano_new.time_ns());
       cinfo_msg->width = pano_new.size2d().width;
       cinfo_msg->height = pano_new.size2d().height;
       Eigen::Map<RowMat34d> P_map(&cinfo_msg->P[0]);
@@ -572,8 +574,8 @@ void NodeOdom::Publish(const std_msgs::Header& lidar_header) {
       }
     }
 
-    // update pano_rm_id;
-    pano_rm_id = pano_rm.id();
+    // update pano_old_id;
+    pano_old_id = pano_old.id();
   }
 
   const auto e = t.Elapsed();
