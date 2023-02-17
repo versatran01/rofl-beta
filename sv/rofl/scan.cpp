@@ -26,7 +26,7 @@ std::string ScanInfo::Repr() const {
       "col_span=[{},{}), end_time={}, col_dt={}ns, range_scale={}",
       col_span.start,
       col_span.end,
-      end_time_ns/1.e9,
+      static_cast<double>(end_time_ns) / 1e9,
       static_cast<int>(col_dtime * 1e9),
       range_scale);
 }
@@ -214,7 +214,6 @@ void LidarSweep::CalcRangeGrad2(int gsize) {
 void LidarSweep::CalcSignalGrad(int gsize) {
   using elem_t = uint16_t;
 
-  const int halfw = 2;
   const auto col_range = GetValidRange(2);
 
   ParallelFor({0, rows(), gsize}, [&](int r) {

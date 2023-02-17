@@ -17,10 +17,10 @@ inline constexpr int WrapCols(int c, int cols) noexcept {
 
 // TODO(rofl): change range_scale to 1 / range_scale
 struct ScanInfo {
-  uint64_t end_time_ns{}; // time of last col
-  double col_dtime{};     // dt between two column
-  float range_scale{};    // used to convert range from 16u to float
-  cv::Range col_span{};   // col span
+  uint64_t end_time_ns{};  // time of last col
+  double col_dtime{};      // dt between two column
+  float range_scale{};     // used to convert range from 16u to float
+  cv::Range col_span{};    // col span
 
   void Check() const;
   std::string Repr() const;
@@ -94,10 +94,12 @@ struct LidarScan : public MatBase<ScanData> {
 
   /// @brief Time at a particular column
   double TimeFromEnd(int n) const noexcept {
-    return info_.end_time_ns/1.e9 - info_.col_dtime * n;
+    return static_cast<double>(info_.end_time_ns) / 1.e9 - info_.col_dtime * n;
   }
   double TimeEnd() const noexcept { return TimeFromEnd(0); }
-  double TimeEndNs() const noexcept { return info_.end_time_ns; }
+  double TimeEndNs() const noexcept {
+    return static_cast<double>(info_.end_time_ns);
+  }
 
   float RangeAt(int r, int c) const {
     return static_cast<float>(DataAt(r, c).r16u) / info_.range_scale;
@@ -115,7 +117,7 @@ struct LidarScan : public MatBase<ScanData> {
 /// @brief This buffer stores the full sweep, the score grid and matches, and
 /// transforms of each column
 class LidarSweep final : public LidarScan {
-  cv::Mat ddrdu_;    // abs of 2nd order deriviative of range in x (float32)
+  cv::Mat ddrdu_;    // abs of 2nd order derivative of range in x (float32)
   cv::Mat dsdu_;     // gradient of signal in x (uint16)
   SE3fVec tfs_o_l_;  // transform from each lidar column to odom frame
 
