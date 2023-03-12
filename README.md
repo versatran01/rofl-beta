@@ -1,4 +1,4 @@
-# rofl-beta
+# 🤣rofl-beta
 
 ROFL is an improved version of LLOL.
 It makes ues of two panos instead of one for odometry estimation.
