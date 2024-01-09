@@ -67,6 +67,14 @@ jobs:
           cmake -DBUILD_SOPHUS_TESTS=OFF -DBUILD_SOPHUS_EXAMPLES=OFF -DCMAKE_CXX_STANDARD=17 ..
           sudo make install
 
+      - name: Install Benchmark
+        run: |
+           git clone --depth 1 --branch v1.8.3 https://github.com/google/benchmark.git
+           cd benchmark
+           mkdir build && cd build
+           cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 ..
+           sudo cmake --build . --target install
+
       - name: Build workspace
         run: |
           . /opt/ros/${{ matrix.ros_distro }}/setup.sh
